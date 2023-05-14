@@ -1,0 +1,208 @@
+{% extends "core/simple_base.html" %}
+{% load static %}
+{% block content %}
+
+<!-- LANDING -->
+<div class="landing">
+    <!-- LANDING DECORATION -->
+    <div class="landing-decoration"></div>
+    <!-- /LANDING DECORATION -->
+
+    <!-- LANDING INFO -->
+    <div class="landing-info">
+        <!-- LOGO -->
+        <div class="logo">
+            <!-- ICON LOGO VIKINGER -->
+            <svg class="icon-logo-vikinger">
+                <use xlink:href="#svg-logo-vikinger"></use>
+            </svg>
+            <!-- /ICON LOGO VIKINGER -->
+        </div>
+        <!-- /LOGO -->
+
+        <!-- LANDING INFO PRETITLE -->
+        <h2 class="landing-info-pretitle">Bem vindo(a)</h2>
+        <!-- /LANDING INFO PRETITLE -->
+
+        <!-- LANDING INFO TITLE -->
+        <h1 class="landing-info-title">Lingualyze</h1>
+        <!-- /LANDING INFO TITLE -->
+
+        <!-- LANDING INFO TEXT -->
+        <p class="landing-info-text">The next generation social network &amp; community! Connect with your friends and
+            play with our quests and badges gamification system!</p>
+        <!-- /LANDING INFO TEXT -->
+
+        <!-- TAB SWITCH -->
+        <div class="tab-switch">
+            <!-- TAB SWITCH BUTTON -->
+            <a href="#" class="tab-switch-button active">Entrar</a>
+            <!-- /TAB SWITCH BUTTON -->
+
+            <!-- TAB SWITCH BUTTON -->
+            <a href="{% url 'accounts:signup' %}" class="tab-switch-button">Cadastro</a>
+            <!-- /TAB SWITCH BUTTON -->
+        </div>
+        <!-- /TAB SWITCH -->
+    </div>
+    <!-- /LANDING INFO -->
+
+    <!-- LANDING FORM -->
+    <form method="POST">
+        {% csrf_token %}
+        <div class="landing-form">
+            <!-- FORM BOX -->
+            <form class="form">
+                <div class="form-box login-register-form-element">
+                    <!-- FORM BOX DECORATION -->
+                    <img class="form-box-decoration overflowing" src="{% static 'img/landing/rocket.png' %}" alt="rocket">
+                    <!-- /FORM BOX DECORATION -->
+        
+                    <!-- FORM BOX TITLE -->
+                    <h2 class="form-box-title">Entrar na conta</h2>
+                    <!-- /FORM BOX TITLE -->
+        
+                    <!-- FORM -->
+                    
+                    <!-- FORM ROW -->
+                    <div class="form-row">
+                        <!-- FORM ITEM -->
+                        <div class="form-item">
+                            <!-- FORM INPUT -->
+                            <div class="form-input">
+                                <label for="login-username">Usuário ou Email</label>
+                                <input type="text" id="login-username" name="username">
+                            </div>
+                            <!-- /FORM INPUT -->
+                        </div>
+                        <!-- /FORM ITEM -->
+                    </div>
+                    <!-- /FORM ROW -->
+
+                    <!-- FORM ROW -->
+                    <div class="form-row">
+                        <!-- FORM ITEM -->
+                        <div class="form-item">
+                            <!-- FORM INPUT -->
+                            <div class="form-input">
+                                <label for="login-password">Sua senha</label>
+                                <input type="password" id="login-password" name="password">
+                            </div>
+                            <!-- /FORM INPUT -->
+                        </div>
+                        <!-- /FORM ITEM -->
+                    </div>
+                    <!-- /FORM ROW -->
+                    {% if form.errors %}
+                        <div class="form-row">
+                            <!-- FORM ITEM -->
+                            <div class="form-item">
+                                <small class="text-danger">Usuário ou senha inválidos, tente novamente, caso o erro persista você poderá recuperar sua senha <a href="">clicando aqui</a></small>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    
+                    
+                    <!-- FORM ROW -->
+                    <div class="form-row space-between">
+                        <!-- FORM ITEM -->
+                        <div class="form-item">
+                            <!-- CHECKBOX WRAP -->
+                            <div class="checkbox-wrap">
+                                <input type="checkbox" id="login-remember" name="login_remember" checked>
+                                <!-- CHECKBOX BOX -->
+                                <div class="checkbox-box">
+                                    <!-- ICON CROSS -->
+                                    <svg class="icon-cross">
+                                        <use xlink:href="#svg-cross"></use>
+                                    </svg>
+                                    <!-- /ICON CROSS -->
+                                </div>
+                                <!-- /CHECKBOX BOX -->
+                                <label for="login-remember">Lembrar-me</label>
+                            </div>
+                            <!-- /CHECKBOX WRAP -->
+                        </div>
+                        <!-- /FORM ITEM -->
+
+                        <!-- FORM ITEM -->
+                        <div class="form-item">
+                            <!-- FORM LINK -->
+                            <a class="form-link" href="#">Esqueceu a senha?</a>
+                            <!-- /FORM LINK -->
+                        </div>
+                        <!-- /FORM ITEM -->
+                    </div>
+                    <!-- /FORM ROW -->
+
+                    <!-- FORM ROW -->
+                    <div class="form-row">
+                        <!-- FORM ITEM -->
+                        <div class="form-item">
+                            <!-- BUTTON -->
+                            <button class="button medium secondary">Entrar na minha conta!</button>
+                            <!-- /BUTTON -->
+                        </div>
+                        <!-- /FORM ITEM -->
+                    </div>
+                    <!-- /FORM ROW -->
+                    <!-- /FORM -->
+        
+                    <!-- LINED TEXT -->
+                    <p class="lined-text">Entre com suas redes sociais</p>
+                    <!-- /LINED TEXT -->
+        
+                    <!-- SOCIAL LINKS -->
+                    <div class="social-links">
+                        <!-- SOCIAL LINK -->
+                        <a class="social-link facebook" href="#">
+                            <!-- ICON FACEBOOK -->
+                            <svg class="icon-facebook">
+                                <use xlink:href="#svg-facebook"></use>
+                            </svg>
+                            <!-- /ICON FACEBOOK -->
+                        </a>
+                        <!-- /SOCIAL LINK -->
+        
+                        <!-- SOCIAL LINK -->
+                        <a class="social-link twitter" href="#">
+                            <!-- ICON TWITTER -->
+                            <svg class="icon-twitter">
+                                <use xlink:href="#svg-twitter"></use>
+                            </svg>
+                            <!-- /ICON TWITTER -->
+                        </a>
+                        <!-- /SOCIAL LINK -->
+        
+                        <!-- SOCIAL LINK -->
+                        <a class="social-link twitch" href="#">
+                            <!-- ICON TWITCH -->
+                            <svg class="icon-twitch">
+                                <use xlink:href="#svg-twitch"></use>
+                            </svg>
+                            <!-- /ICON TWITCH -->
+                        </a>
+                        <!-- /SOCIAL LINK -->
+        
+                        <!-- SOCIAL LINK -->
+                        <a class="social-link youtube" href="#">
+                            <!-- ICON YOUTUBE -->
+                            <svg class="icon-youtube">
+                                <use xlink:href="#svg-youtube"></use>
+                            </svg>
+                            <!-- /ICON YOUTUBE -->
+                        </a>
+                        <!-- /SOCIAL LINK -->
+                    </div>
+                    <!-- /SOCIAL LINKS -->
+                </div>
+                <!-- /FORM BOX -->
+            </form>
+        </div>
+    </form>
+    <!-- /LANDING FORM -->
+</div>
+<!-- /LANDING -->
+
+{% endblock content %}

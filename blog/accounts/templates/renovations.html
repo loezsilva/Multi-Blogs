@@ -1,0 +1,98 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="container" style="padding: 80px 20px;">
+    <div class="tyn-profile my-4">
+        <div class="tyn-profile-details">
+            <div class="tab-content">
+                <div class="tab-pane show active" id="profile-edit" tabindex="0">
+                    <div class="row gy-5">
+                        <div class="col-12">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Início</th>
+                                        <th>Fim</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>    
+                                    <tr v-for="renovation in renovations">
+                                        <td>${moment(renovation.autoRecurring.startDate).format("LLL")}</td>
+                                        <td>${moment(renovation.autoRecurring.endDate).format("LLL")}</td>
+                                        <td>${renovation.status}</td>
+                                        <td>
+                                            <a :href="'{{BASE_URL}}/assinaturas/renovar/'+renovation.id+'/'" class="btn btn-danger btn-sm">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div><!-- .row -->
+                </div><!-- .tab-pane -->
+            </div><!-- .tab-content -->
+        </div><!-- .tyn-profile-details -->
+    </div><!-- .tyn-profile -->
+</div>
+{% endblock content %}
+
+
+{% block modal %}
+
+{% endblock modal %}    
+
+{% block js %}
+
+<script>
+    moment.locale('pt_br')
+    var app = new Vue({
+        el: "#app",
+        delimiters: ['${', '}'],
+        data: {
+            renovations: [],
+        },
+        methods: {
+            alertTop(text, icon='success') {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                Toast.fire({
+                    icon: icon,
+                    title: text
+                })
+            },
+            moment(date) {
+                return moment(date)
+            },
+            getSignatures() {
+                axios.get("{{user.urls.user_signatures}}").then((response) => {
+                    this.renovations = response.data.response.results
+                })
+            }
+        },
+        updated() {
+            
+        },
+        watch: {
+            
+        },
+        mounted() {
+            this.getSignatures()
+        }
+    })
+</script>
+{% endblock js %}
+    

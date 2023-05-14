@@ -1,0 +1,261 @@
+{% extends "core/simple_base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+<!-- LANDING -->
+<div class="landing">
+    <!-- LANDING DECORATION -->
+    <div class="landing-decoration"></div>
+    <!-- /LANDING DECORATION -->
+
+    <!-- LANDING INFO -->
+    <div class="landing-info">
+        <!-- LOGO -->
+        <div class="logo">
+            <!-- ICON LOGO VIKINGER -->
+            <svg class="icon-logo-vikinger">
+                <use xlink:href="#svg-logo-vikinger"></use>
+            </svg>
+            <!-- /ICON LOGO VIKINGER -->
+        </div>
+        <!-- /LOGO -->
+
+        <!-- LANDING INFO PRETITLE -->
+        <h2 class="landing-info-pretitle">Bem vindo(a)</h2>
+        <!-- /LANDING INFO PRETITLE -->
+
+        <!-- LANDING INFO TITLE -->
+        <h1 class="landing-info-title">Lingualyze</h1>
+        <!-- /LANDING INFO TITLE -->
+
+        <!-- LANDING INFO TEXT -->
+        <p class="landing-info-text">The next generation social network &amp; community! Connect with your friends and
+            play with our quests and badges gamification system!</p>
+        <!-- /LANDING INFO TEXT -->
+
+        <!-- TAB SWITCH -->
+        <div class="tab-switch">
+            <!-- TAB SWITCH BUTTON -->
+            <a href="{% url 'login' %}" class="tab-switch-button">Entrar</a>
+            <!-- /TAB SWITCH BUTTON -->
+
+            <!-- TAB SWITCH BUTTON -->
+            <a href="#" class="tab-switch-button active">Cadastro</a>
+            <!-- /TAB SWITCH BUTTON -->
+        </div>
+        <!-- /TAB SWITCH -->
+    </div>
+    <!-- /LANDING INFO -->
+
+    <!-- LANDING FORM -->
+    <form method="POST">
+        {% csrf_token %}
+        <div class="landing-form">
+    
+            <!-- FORM BOX -->
+            <div class="form-box login-register-form-element">
+                <!-- FORM BOX DECORATION -->
+                <img class="form-box-decoration" src="{% static 'img/landing/rocket.png' %}" alt="rocket">
+                <!-- /FORM BOX DECORATION -->
+    
+                <!-- FORM BOX TITLE -->
+                <h2 class="form-box-title">Criar uma conta!</h2>
+                <!-- /FORM BOX TITLE -->
+        
+                <!-- FORM ROW -->
+                <div class="form-row">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                        <!-- FORM INPUT -->
+                        <div class="form-input">
+                            <label for="register-username">Usuário</label>
+                            {% render_field form.username %}
+                            {% if form.username.errors %}
+                                <ul>
+                                    {% for error in form.username.errors %}
+                                        <li>
+                                            <small class="text-danger">{{error}}</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <!-- /FORM INPUT -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+
+                <!-- FORM ROW -->
+                <div class="form-row">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                        <!-- FORM INPUT -->
+                        <div class="form-input">
+                            <label for="register-username">E-mail</label>
+                            {% render_field form.email type="text" %}
+                            {% if form.email.errors %}
+                                <ul>
+                                    {% for error in form.email.errors %}
+                                        <li>
+                                            <small class="text-danger">{{error}}</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <!-- /FORM INPUT -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+
+                <!-- FORM ROW -->
+                <div class="form-row">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                        <!-- FORM INPUT -->
+                        <div class="form-input">
+                            <label for="register-username">Nome</label>
+                            {% render_field form.first_name %}
+                            {% if form.first_name.errors %}
+                                <ul>
+                                    {% for error in form.first_name.errors %}
+                                        <li>
+                                            <small class="text-danger">{{error}}</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <!-- /FORM INPUT -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+
+
+                <!-- FORM ROW -->
+                <div class="form-row">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                        <!-- FORM INPUT -->
+                        <div class="form-input">
+                            <label for="register-username">Sobrenome</label>
+                            {% render_field form.last_name %}
+                            {% if form.last_name.errors %}
+                                <ul>
+                                    {% for error in form.last_name.errors %}
+                                        <li>
+                                            <small class="text-danger">{{error}}</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <!-- /FORM INPUT -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+
+                <!-- FORM ROW -->
+                <div class="form-row">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                        <!-- FORM INPUT -->
+                        <div class="form-input">
+                            <label for="register-username">Senha</label>
+                            {% render_field form.password1 %}
+                            {% if form.password1.errors %}
+                                <ul>
+                                    {% for error in form.password1.errors %}
+                                        <li>
+                                            <small class="text-danger">{{error}}</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <!-- /FORM INPUT -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+
+
+                <!-- FORM ROW -->
+                <div class="form-row">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                        <!-- FORM INPUT -->
+                        <div class="form-input">
+                            <label for="register-username">Confirmação</label>
+                            {% render_field form.password2 %}
+                            {% if form.password2.errors %}
+                                <ul>
+                                    {% for error in form.password2.errors %}
+                                        <li>
+                                            <small class="text-danger">{{error}}</small>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <!-- /FORM INPUT -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+
+                <!-- FORM ROW -->
+                <div class="form-row">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                    <!-- CHECKBOX WRAP -->
+                    <div class="checkbox-wrap">
+                        {% render_field form.accepted_the_terms_of_use required="required" %}
+                        <!-- CHECKBOX BOX -->
+                        <div class="checkbox-box">
+                        <!-- ICON CROSS -->
+                        <svg class="icon-cross">
+                            <use xlink:href="#svg-cross"></use>
+                        </svg>
+                        <!-- /ICON CROSS -->
+                        </div>
+                        <!-- /CHECKBOX BOX -->
+                        <label for="{{form.accepted_the_terms_of_use.auto_id}}">Eu aceito os termos de uso da plataforma</label>
+                    </div>
+                    <!-- /CHECKBOX WRAP -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+            
+                <!-- FORM ROW -->
+                <div class="form-row">
+                    <!-- FORM ITEM -->
+                    <div class="form-item">
+                    <!-- BUTTON -->
+                    <button class="button medium primary">Criar conta!</button>
+                    <!-- /BUTTON -->
+                    </div>
+                    <!-- /FORM ITEM -->
+                </div>
+                <!-- /FORM ROW -->
+    
+                <!-- FORM TEXT -->
+                <p class="form-text">Você receberá um e-mail de confirmação em sua caixa de entrada com um link para ativar sua conta.
+                    Se você tiver algum problema, <a href="#">fale conosco</a>!</p>
+                <!-- /FORM TEXT -->
+            </div>
+            <!-- /FORM BOX -->
+        </div>
+    </form>
+    <!-- /LANDING FORM -->
+</div>
+<!-- /LANDING -->
+
+{% endblock content %}

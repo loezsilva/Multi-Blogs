@@ -1,0 +1,653 @@
+{% extends "core/base.html" %}
+
+
+{% block content %}
+<div class="container" style="padding: 80px 20px;">
+    <div class="tyn-profile my-4">
+        <div class="tyn-profile-details">
+            <div class="tab-content">
+                <div class="tab-pane show active" id="profile-edit" tabindex="0">
+                    <div class="row gy-5">
+                        <div class="col-12">
+                            <div class="row gy-4">
+                                <div class="col-lg-3">
+                                    <h6>Plano Atual</h6>
+                                    <div class="tyn-subtext">Esse é o seu plano atual</div>
+                                </div>
+                                <div class="col-lg-9">
+                                    <div class="row g-gs">
+                                        <div class="col-12">
+                                            <div class="border rounded-2 p-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="tyn-media-group w-100">
+                                                        <div class="tyn-media text-bg-primary">
+                                                        </div>
+                                                        <div class="tyn-media-col flex-wrap">
+                                                            <h6 class="name">{{user.plan}}</h6>
+                                                            <span class="content"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        {% if user.plan.is_free %}
+                                                            <a href="{% url 'plans:list' %}" class="btn btn-sm btn-primary ms-2">Escolher assinatura</a>
+                                                        {% else %}
+                                                            <button type="button" class="btn btn-sm btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#cancelSignature">Cancelar assinatura</button>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div><!-- .border -->
+                                        </div><!-- .col -->
+                                    </div><!-- .row -->
+                                </div><!-- .col -->
+                            </div><!-- .row -->
+                        </div>
+                        <div class="col-12">
+                            <div class="row gy-4">
+                                <div class="col-lg-3">
+                                    <h6>Informações pessoais e assinatura</h6>
+                                    <div class="tyn-subtext">Processo de renovação ou aquisição de assinatura</div>
+                                </div>
+                                <div class="col-lg-9">
+                                    <div class="row g-gs">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label d-flex" for="primaryEmail">Seu E-mail <span class="small ms-2 text-success">Verificado</span></label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control" id="primaryEmail" disabled placeholder="Email" value="{{user.email}}">
+                                                </div>
+                                                <div class="tyn-subtext mt-2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label class="form-label d-flex" for="firstName">Nome</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control" id="firstName" placeholder="Seu primeiro nome" v-model="user.firstName">
+                                                </div>
+                                                <div class="tyn-subtext mt-2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="form-group">
+                                                <label class="form-label d-flex" for="lastName">Nome</label>
+                                                <div class="form-control-wrap">
+                                                    <input type="text" class="form-control" id="lastName" placeholder="Seu primeiro nome" v-model="user.lastName">
+                                                </div>
+                                                <div class="tyn-subtext mt-2"></div>
+                                            </div>
+                                        </div>
+                                        <!-- Contacts -->
+                                        <template v-if="user.phones && user.phones.length">
+                                            <div class="col-12">
+                                                <div class="tyn-media-group align-items-start align-items-center mb-3" v-for="(phone, index) in user.phones.filter(phone => phone.id)">
+                                                    <div class="tyn-media tyn-size-md tyn-circle bg-light">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-telephone-x-fill" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511zm9.261 1.135a.5.5 0 0 1 .708 0L13 2.793l1.146-1.147a.5.5 0 0 1 .708.708L13.707 3.5l1.147 1.146a.5.5 0 0 1-.708.708L13 4.207l-1.146 1.147a.5.5 0 0 1-.708-.708L12.293 3.5l-1.147-1.146a.5.5 0 0 1 0-.708z"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="tyn-media-col">
+                                                        <div class="tyn-media-row d-flex justify-content-between">
+                                                            <span class="message">(${phone.code}) <strong>${phone.number}</strong></span>
+                                                            <div>
+                                                                <button class="btn btn-sm btn-primary">
+                                                                    <!-- check2-circle -->
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"></path>
+                                                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"></path>
+                                                                    </svg>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-danger" @click="deleteObject('phone', phone)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tyn-media-row has-dot-sap">
+                                                            <span class="meta">${moment(phone.createdAt).fromNow(true)}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#createObject" @click="creating = 'phone'">Adicionar novo contato</button>
+                                            </div>
+                                        </template>
+                                        <template v-else>
+                                            <div class="tyn-reply-call bg-light rounded w-100">
+                                                <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#createObject" @click="creating = 'phone'">
+                                                    <div class="tyn-media-group py-1">
+                                                        <div class="tyn-media tyn-size-lg text-bg-danger">
+                                                            <!-- telephone-x-fill -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-x-fill" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511zm9.261 1.135a.5.5 0 0 1 .708 0L13 2.793l1.146-1.147a.5.5 0 0 1 .708.708L13.707 3.5l1.147 1.146a.5.5 0 0 1-.708.708L13 4.207l-1.146 1.147a.5.5 0 0 1-.708-.708L12.293 3.5l-1.147-1.146a.5.5 0 0 1 0-.708z"></path>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="tyn-media-col">
+                                                            <h6 class="name">Você não possiu contato cadastrado, clique aqui para adicionar</h6>
+                                                            <div class="meta">O contato é importante para você ficar informado a respeito das nossas novidades</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </template>
+                                        <hr>
+                                        <!-- End contacts -->
+                                        <!-- Address -->
+                                        <template v-if="user.adresses && user.adresses.length">
+                                            <div class="col-12">
+                                                <div class="tyn-media-group align-items-start align-items-center mb-3" v-for="(address, index) in user.adresses.filter(address => address.id)">
+                                                    <div class="tyn-media tyn-size-md tyn-circle bg-light">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                                            <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+                                                            <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="tyn-media-col">
+                                                        <div class="tyn-media-row d-flex justify-content-between">
+                                                            <span class="message"><strong>${address.street} ${address.number}</strong>, ${address.city}</span>
+                                                            <div>
+                                                                <button class="btn btn-sm btn-primary">
+                                                                    <!-- check2-circle -->
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"></path>
+                                                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"></path>
+                                                                    </svg>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-danger" @click="deleteObject('address', address)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tyn-media-row has-dot-sap">
+                                                            <span class="meta">${moment(address.createdAt).fromNow(true)}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#createObject" @click="creating = 'address'">Adicionar novo endereço</button>
+                                            </div>
+                                        </template>
+                                        <template v-else>
+                                            <div class="tyn-reply-call bg-light rounded w-100">
+                                                <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#createObject" @click="creating = 'address'">
+                                                    <div class="tyn-media-group py-1">
+                                                        <div class="tyn-media tyn-size-lg text-bg-danger">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                                                                <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+                                                                <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="tyn-media-col">
+                                                            <h6 class="name">Você não possiu endereço cadastrado, clique aqui para adicionar</h6>
+                                                            <div class="meta">Seu endereço é importante para que possamos personalizar melhor a sua experiência</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </template>
+                                        <hr>
+                                        <!-- End Address -->
+                                        <!-- Documents -->
+                                        <template v-if="user.documents && user.documents.length">
+                                            <div class="col-12">
+                                                <div class="tyn-media-group align-items-start align-items-center mb-3" v-for="(document, index) in user.documents.filter(document => document.id)">
+                                                    <div class="tyn-media tyn-size-md tyn-circle bg-light">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
+                                                            <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5ZM9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8Zm1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Z"/>
+                                                            <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2ZM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12V4Z"/>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="tyn-media-col">
+                                                        <div class="tyn-media-row d-flex justify-content-between">
+                                                            <span class="message"><strong>${document.number}</strong>(${document.type})</span>
+                                                            <div>
+                                                                <button class="btn btn-sm btn-primary">
+                                                                    <!-- check2-circle -->
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"></path>
+                                                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"></path>
+                                                                    </svg>
+                                                                </button>
+                                                                <button class="btn btn-sm btn-danger" @click="deleteObject('document', document)">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
+                                                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"></path>
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="tyn-media-row has-dot-sap">
+                                                            <span class="meta">${moment(document.createdAt).fromNow(true)}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#createObject" @click="creating = 'document'">Adicionar novo documento</button>
+                                            </div>
+                                        </template>
+                                        <template v-else>
+                                            <div class="tyn-reply-call bg-light rounded w-100">
+                                                <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#createObject" @click="creating = 'document'">
+                                                    <div class="tyn-media-group py-1">
+                                                        <div class="tyn-media tyn-size-lg text-bg-danger">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-vcard" viewBox="0 0 16 16">
+                                                                <path d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5ZM9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8Zm1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5Z"/>
+                                                                <path d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2ZM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96c.026-.163.04-.33.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1.006 1.006 0 0 1 1 12V4Z"/>
+                                                            </svg>
+                                                        </div>
+                                                        <div class="tyn-media-col">
+                                                            <h6 class="name">Você não possiu documentos cadastrado, clique aqui para adicionar</h6>
+                                                            <div class="meta">Os documentos de identificação é importante para que você possa adiquirir uma assinatura.</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </template>
+                                        <!-- End Documents -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4 d-flex justify-content-end">
+                            <button class="btn btn-primary" @click="saveUser()">Confirmar alterações</button>
+                        </div>
+                    </div><!-- .row -->
+                </div><!-- .tab-pane -->
+            </div><!-- .tab-content -->
+        </div><!-- .tyn-profile-details -->
+    </div><!-- .tyn-profile -->
+</div>
+{% endblock content %}
+
+
+{% block modal %}
+<div class="modal fade" tabindex="-1" id="cancelSignature">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-body">
+                <div class="py-4 px-4 text-center">
+                    <h3>Cancelar assinatura</h3>
+                    <p class="small">Você confirma que quer cancelar a assinatura? ao confirmar voltará a utilizar a assinatura Basic e voltará a ter limitações.</p>
+                    <ul class="tyn-list-inline gap gap-3 pt-1 justify-content-center">
+                        <li>
+                            <button class="btn btn-danger" data-bs-dismiss="modal" @click="cancelSignature('cancelled')">Confirmar e Cancelar</button>
+                        </li>
+                        <li>
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" @click="cancelSignature('paused')">Apenas Pausar</button>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- .modal-body -->
+            <button class="btn btn-md btn-icon btn-pill btn-white shadow position-absolute top-0 end-0 mt-n3 me-n3" data-bs-dismiss="modal">
+                <!-- x-lg -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                </svg>
+            </button>
+        </div><!-- .modal-content -->
+    </div><!-- .modal-dialog -->
+</div>
+
+<div class="modal fade" tabindex="-1" id="createObject">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+            <div class="modal-body">
+                <div class="py-4 px-4">
+                    <h3>Adicionar nova informação</h3>
+                    <p class="small">Preencha as informações abaixo para adicionar a informação ao seu perfil.</p>
+                    <form method="get" onsubmit="return false">
+                        <template v-if="creating == 'phone'">
+                            <div class="form-group row">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <label class="form-label" for="phoneCode">Área</label>
+                                        <select id="phoneCode" class="form-control" v-model="newPhone.code" required>
+                                            <option value="11">11</option>
+                                            <option value="21">21</option>
+                                            <option value="31">31</option>
+                                            <option value="41">41</option>
+                                            <option value="51">51</option>
+                                            <option value="61">61</option>
+                                            <option value="71">71</option>
+                                            <option value="81">81</option>
+                                            <option value="85">85</option>
+                                            <option value="91">91</option>
+                                            <option value="92">92</option>
+                                            <option value="95">95</option>
+                                            <option value="96">96</option>
+                                            <option value="98">98</option>
+                                            <option value="99">99</option>
+                                            <option value="84">84</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-9">
+                                        <label class="form-label" for="phoneNumber">Número</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="phoneNumber" placeholder="Número" v-model="newPhone.number" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mt-3">
+                                        <label class="form-label" for="phoneIswhats">É whatsapp</label>
+                                        <div class="form-control-wrap">
+                                            <input type="checkbox" class="form-check-input" id="phoneIswhats" v-model="newPhone.isWhatsapp">
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mt-3">
+                                        <label class="form-label" for="phoneMain">Principal</label>
+                                        <div class="form-control-wrap">
+                                            <input type="checkbox" class="form-check-input" id="phoneMain" v-model="newPhone.main">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <template v-if="creating == 'address'">
+                            <div class="form-group row">
+                                <div class="row">
+                                    <div class="col-lg-6 my-2">
+                                        <label class="form-label" for="cep">CEP</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" @blur="getCep($event.target.value)" id="cep" placeholder="Cep" v-model="newAddress.zipCode" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-offset-6"></div>
+                                    <div class="col-lg-9">
+                                        <label class="form-label" for="address">Endereço</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="address" placeholder="Endereço" v-model="newAddress.street" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <label class="form-label" for="number">Número</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="number" placeholder="Número" v-model="newAddress.number" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 my-2">
+                                        <label class="form-label" for="state">Estado</label>
+                                        <select id="state" class="form-control" v-model="newAddress.state" required>
+                                            <option value="AC">Acre</option>
+                                            <option value="AL">Alagoas</option>
+                                            <option value="AP">Amapá</option>
+                                            <option value="AM">Amazonas</option>
+                                            <option value="BA">Bahia</option>
+                                            <option value="CE">Ceará</option>
+                                            <option value="DF">Distrito Federal</option>
+                                            <option value="ES">Espírito Santo</option>
+                                            <option value="GO">Goiás</option>
+                                            <option value="MA">Maranhão</option>
+                                            <option value="MT">Mato Grosso</option>
+                                            <option value="MS">Mato Grosso do Sul</option>
+                                            <option value="MG">Minas Gerais</option>
+                                            <option value="PA">Pará</option>
+                                            <option value="PB">Paraíba</option>
+                                            <option value="PR">Paraná</option>
+                                            <option value="PE">Pernambuco</option>
+                                            <option value="PI">Piauí</option>
+                                            <option value="RJ">Rio de Janeiro</option>
+                                            <option value="RN">Rio Grande do Norte</option>
+                                            <option value="RS">Rio Grande do Sul</option>
+                                            <option value="RO">Rondônia</option>
+                                            <option value="RR">Roraima</option>
+                                            <option value="SC">Santa Catarina</option>
+                                            <option value="SP">São Paulo</option>
+                                            <option value="SE">Sergipe</option>
+                                            <option value="TO">Tocantins</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-offset-6"></div>
+                                    <div class="col-6 mt-3">
+                                        <label class="form-label" for="addressMain">Principal</label>
+                                        <div class="form-control-wrap">
+                                            <input type="checkbox" class="form-check-input" id="addressMain" v-model="newAddress.main">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <template v-if="creating == 'document'">
+                            <div class="form-group row">
+                                <div class="row">
+                                    <div class="col-lg-4 my-2">
+                                        <label class="form-label" for="documentType">Tipo</label>
+                                        <select id="documentType" class="form-control" v-model="newDocument.type" required>
+                                            <option value="CPF">CPF</option>
+                                            <option value="RG">RG</option>
+                                            <option value="PASSPORT">PASSAPORTE</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-8 my-2">
+                                        <label class="form-label" for="documentNumber">Número</label>
+                                        <div class="form-control-wrap">
+                                            <input type="text" class="form-control" id="documentNumber" placeholder="Número" v-model="newDocument.number" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-offset-6"></div>
+                                    <div class="col-6 mt-3">
+                                        <label class="form-label" for="documentMain">Principal</label>
+                                        <div class="form-control-wrap">
+                                            <input type="checkbox" class="form-check-input" id="documentMain" v-model="newDocument.main">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                        <ul class="tyn-list-inline gap gap-3 pt-1 justify-content-center mt-4">
+                            <li>
+                                <button type="submit" class="btn btn-primary" @click="createObject()">Confirmar <span class="d-none d-lg-block">e adicionar</span></button>
+                            </li>
+                            <li>
+                                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+            </div><!-- .modal-body -->
+            <button class="btn btn-md btn-icon btn-pill btn-white shadow position-absolute top-0 end-0 mt-n3 me-n3" data-bs-dismiss="modal">
+                <!-- x-lg -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                </svg>
+            </button>
+        </div><!-- .modal-content -->
+    </div><!-- .modal-dialog -->
+</div>
+
+{% endblock modal %}
+    
+    
+
+{% block js %}
+
+<script>
+    moment.locale('pt_br')
+    var app = new Vue({
+        el: "#app",
+        delimiters: ['${', '}'],
+        data: {
+            user: {},
+            creating: 'phone',
+            newPhone: {
+                code: '84',
+                number: '',
+                isWhatsapp: false,
+                main: false,
+            },
+            newAddress: {
+                zipCode: '',
+                state: 'RN',
+                number: '',
+                street: '',
+                city: '',
+                complement: '',
+                main: false,
+            },
+            newDocument: {
+                type: 'CPF',
+                number: '',
+                main: false,
+            },
+        },
+        methods: {
+            cancelSignature(status) {
+                axios.patch('', { status: status }).then((response) => {
+                    
+                }).catch(e => {
+                    Swal.fire('Atenção', 'Você voltou para a assinatura free, porém não foi possível cancelar sua assinatura por completo, mas não se preocupe, os erros são monitorados automaticamente, em breve entraremos em contato para informar a solução desse problema.', 'info')
+                }).finally(() => {
+                    window.location.reload()
+                })
+            },
+            alertTop(text, icon='success') {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                Toast.fire({
+                    icon: icon,
+                    title: text
+                })
+            },
+            moment(date) {
+                return moment(date)
+            },
+            createObject() {
+                if(this.creating == 'phone') {
+                    if(this.newPhone.number.length) {
+                        axios.post(this.user.urls.createPhone, this.newPhone).then((response) => {
+                            this.user.phones.push(response.data)
+                            this.newPhone = {
+                                code: '84',
+                                number: '',
+                                isWhatsapp: false,
+                                main: false,
+                            }
+                            this.alertTop('Contato adiciona com sucesso!')
+                        }).catch(e => {
+                            this.alertTop('Erro ao adicionar o contato, cetifique-se que você digitou tudo corretamente e tente novamente', 'error')
+                        })
+                    }
+                }
+                if(this.creating == 'address') {
+                    if(this.newAddress.number.length) {
+                        axios.post(this.user.urls.createAddress, this.newAddress).then((response) => {
+                            this.user.adresses.push(response.data)
+                            this.newAddress = {
+                                zipCode: '',
+                                state: 'RN',
+                                number: '',
+                                street: '',
+                                city: '',
+                                complement: '',
+                                main: false,
+                            }
+                            this.alertTop('Endereço adiciona com sucesso!')
+                        }).catch(e => {
+                            this.alertTop('Erro ao adicionar o endereço, cetifique-se que você digitou tudo corretamente e tente novamente', 'error')
+                        })
+                    }
+                }
+                if(this.creating == 'document') {
+                    if(this.newDocument.number.length) {
+                        axios.post(this.user.urls.createDocument, this.newDocument).then((response) => {
+                            this.user.documents.push(response.data)
+                            this.newDocument = {
+                                type: 'CPF',
+                                number: '',
+                                main: false,
+                            }
+                            this.alertTop('Documento adiciona com sucesso!')
+                        }).catch(e => {
+                            this.alertTop('Erro ao adicionar o documento, cetifique-se que você digitou tudo corretamente e tente novamente', 'error')
+                        })
+                    }
+                }
+                $("#createObject").modal('hide')
+            },
+            deleteObject(option, object) {
+                Swal.fire({
+                    title: 'Você confirma?',
+                    text: 'Esta operação é irreversível, você deseja continuar?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sim, excluir',
+                    cancelButtonText: 'Não, cancelar',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if(option == 'phone') {
+                            axios.delete(object.urls.delete).then((response) => {
+                                this.user.phones.splice(this.user.phones.indexOf(object), 1)
+                                this.alertTop('Contato removido com sucesso')
+                            }).catch((e) => {
+                                this.alertTop('Ocorreu um erro ao tentar remover o contato.', 'error')
+                            })
+                        }
+                        if(option == 'address') {
+                            axios.delete(object.urls.delete).then((response) => {
+                                this.user.adresses.splice(this.user.adresses.indexOf(object), 1)
+                                this.alertTop('Contato removido com sucesso')
+                            }).catch((e) => {
+                                this.alertTop('Ocorreu um erro ao tentar remover o contato.', 'error')
+                            })
+                        }
+        
+                        if(option == 'document') {
+                            axios.delete(object.urls.delete).then((response) => {
+                                this.user.documents.splice(this.user.documents.indexOf(object), 1)
+                                this.alertTop('Contato removido com sucesso')
+                            }).catch((e) => {
+                                this.alertTop('Ocorreu um erro ao tentar remover o contato.', 'error')
+                            })
+                        }
+                    }
+                })
+            },
+            getUserData() {
+                axios.get("{% url 'api:users-detail' object.id %}").then((response) => {
+                    this.user = response.data
+                })
+            },
+            getCep(cep) {
+                if(cep.length) {
+                    axios.get(`https://brasilapi.com.br/api/cep/v1/${cep}`).then((response) => {
+                        this.newAddress.state = response.data.state
+                        this.newAddress.city = response.data.city
+                        this.newAddress.street = response.data.street
+                    })
+                }
+            },
+            saveUser() {
+                axios.patch(this.user.urls.updateProfile, this.user).then((response) => {
+                    this.getUserData()
+                    this.alertTop('Dados atualizados com sucesso!')
+                }).catch((e) => {
+                    this.alertTop('Ocorreu um erro ao tentar atualizar seus dados, tente novamente em instantes', 'error')
+                })
+            }
+        },
+        updated() {
+            
+        },
+        watch: {
+            
+        },
+        mounted() {
+            this.getUserData()
+        }
+    })
+</script>
+{% endblock js %}
+    
