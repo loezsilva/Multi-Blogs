@@ -1,0 +1,10 @@
+{% block content %}
+    <div class="container px-4 px-lg-5" style="min-height: 100vh;">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-12">
+                {% include 'core/includes/messages.html' %}
+                {% include 'pages/posts.html' with object_list=posts %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

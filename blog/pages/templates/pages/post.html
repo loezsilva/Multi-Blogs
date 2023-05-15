@@ -1,36 +1,46 @@
 {% extends 'core/base.html' %}
 
 {% block header %}
-    <header class="masthead" style="background-image: url({{object.image.url}})">
-        <div class="container position-relative px-4 px-lg-5">
-            <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
-                    <div class="site-heading">
-                        <h1>
-                            {{object.title|default:"Blog sem nome"}}
-                        </h1>
-                        <span class="subheading mb-3">
-                            {{object.content_str|slice:'50'|default:"Blog sem descrição"|safe}}
-                        </span>
-                        <span class="meta">
-                            Por
-                            <a href="#!" class="text-muted">{{object.autor.get_full_name|default:"Autor sem nome"}}</a>
-                            {{object.created_at}}
-                        </span>
-                    </div>
-                    {% if object.autor == user %}
-                        <div class="d-flex justify-content-center my-3">
-                            <a href="{{object.urls.change}}" class="btn btn-primary">Modificar <i class="fas fa-edit"></i></a>
-                            <a href="{{object.urls.delete}}" class="btn btn-danger mx-2">Remover <i class="fas fa-times"></i></a>
+    {% if object.autor.get_configuration.show_post_header %}
+        <header class="masthead" style="background-image: url({{object.image.url}})">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>
+                                {{object.title|default:"Blog sem nome"}}
+                            </h1>
+                            <span class="subheading mb-3">
+                                {{object.content_str|slice:'50'|default:"Blog sem descrição"|safe}}
+                            </span>
+                            <span class="meta">
+                                Por
+                                <a href="#!" class="text-muted">{{object.autor.get_full_name|default:"Autor sem nome"}}</a>
+                                {{object.created_at}}
+                            </span>
                         </div>
-                    {% endif %}
+                        {% if object.autor == user %}
+                            <div class="d-flex justify-content-center my-3">
+                                <a href="{{object.urls.change}}" class="btn btn-primary">Modificar <i class="fas fa-edit"></i></a>
+                                <a href="{{object.urls.delete}}" class="btn btn-danger mx-2">Remover <i class="fas fa-times"></i></a>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
+    {% endif %}
 {% endblock header %}
 
 {% block content %}
-    {{object.content|safe}}
-    {% include 'comments/includes/comments.html' %}
+    <div class="container px-4 px-lg-5 my-5" style="min-height: 100vh;">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-12">
+                {{object.content|safe}}
+                {% if object.autor.get_configuration.show_comments %}
+                    {% include 'comments/includes/comments.html' %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock content %}

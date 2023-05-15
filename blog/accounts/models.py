@@ -16,6 +16,10 @@ from django.utils.translation import gettext_lazy as _
 from django_lifecycle import hook, LifecycleModelMixin
 from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
 from django.template.defaultfilters import slugify
+from blog.pages.models import Theme
+from django.core import management
+
+
 
 def avatar_upload_to(instance, filename):
     return f"avatar/{instance}-{filename}"
@@ -94,6 +98,16 @@ class User(LifecycleModelMixin, PermissionsMixin, AbstractBaseUser):
         from rest_framework.authtoken.models import Token
         token, created = Token.objects.get_or_create(user=self)
         
+    @hook('after_create')
+    def create_blog_configuration(self):
+        if not Theme.objects.exists():
+            management.call_command('import_themes')
+            
+        BlogConfiguration.objects.get_or_create(
+            autor=self,
+            theme=Theme.objects.all().order_by('created_at').first()
+        )
+        
     @hook('before_create')
     def create_slug(self):
         if self.get_full_name():
@@ -140,16 +154,18 @@ class SocialAccount(BaseModel):
     url = models.URLField("Link do perfil", max_length=255)
     icon = models.CharField("Ícone da rede social", max_length=50, blank=True)
     
-    @hook('before_create')
-    def get_icon(self):            
+    def get_icon(self):    
+        if self.icon:
+            return self.icon
+        
         icons = {
-            "facebook": "fas fa-facebook",
-            "twitter": "fas fa-twitter",
-            "instagram": "fas fa-instagram",
-            "twitch": "fas fa-twitch",
-            "youtube": "fas fa-youtube",
-            "patreon": "fas fa-patreon",
-            "discord": "fas fa-discord",
+            "facebook": "fa-brands fa-facebook",
+            "twitter": "fa-brands fa-twitter",
+            "instagram": "fa-brands fa-instagram",
+            "twitch": "fa-brands fa-twitch",
+            "youtube": "fa-brands fa-youtube",
+            "patreon": "fa-brands fa-patreon",
+            "discord": "fa-brands fa-discord",
         }
         
         return icons[self.social]
@@ -185,6 +201,11 @@ class BlogConfiguration(BaseModel):
     name = models.CharField("Nome do blog", max_length=200)
     description = HTMLField()
     theme = models.ForeignKey("pages.Theme", verbose_name=_("Tema do blog"), on_delete=models.CASCADE, blank=True, null=True)
+    
+    show_post_image = models.BooleanField("Mostrar imagem do post", default=True, blank=True)
+    show_post_header = models.BooleanField("Mostrar header do post", default=True, blank=True)
+    show_comments = models.BooleanField("Mostrar comentários", default=True, blank=True)
+    auto_approve_comments = models.BooleanField("Aprovar comentários automaticamente", default=False, blank=True)
     
     def __str__(self):
         return self.name

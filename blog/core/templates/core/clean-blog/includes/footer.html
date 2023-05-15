@@ -1,0 +1,21 @@
+<footer class="border-top">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-12">
+                <ul class="list-inline text-center">
+                    {% for social in object.autor.socialaccount_set.all %}
+                        <li class="list-inline-item">
+                            <a href="{{social.url}}">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fas fa-circle fa-stack-2x"></i>
+                                    <i class="{{social.get_icon}} fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="small text-center text-muted fst-italic">Desenvolvido por <a href="https://github.com/loezsilva" target="_blank">Luiz Silva</a></div>
+            </div>
+        </div>
+    </div>
+</footer>

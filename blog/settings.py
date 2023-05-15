@@ -270,9 +270,9 @@ TINYMCE_DEFAULT_CONFIG = {
     'entity_encoding': 'raw', 
     'language': 'pt_BR',
     'language_url': f'{BASE_URL}/static/js/tinymce/langs/pt.js',
-    'external_plugins': {
-        'powerpaste': f'{BASE_URL}/static/js/tinymce/powerpaste.js',    
-    },
+    # 'external_plugins': {
+    #     'powerpaste': f'{BASE_URL}/static/js/tinymce/powerpaste.js',    
+    # },
     'images_upload_url': '/tiny/upload-image/',
     'paste_data_images': True,
     'automatic_uploads': True,

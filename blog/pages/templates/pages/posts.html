@@ -1,0 +1,22 @@
+{% for post in object_list %}
+    <a href="{% url 'pages:post-detail' slug=post.slug %}">
+        <div class="post-preview d-flex align-items-center">
+            {% if object.autor.get_configuration.show_post_image %}
+                <div>
+                    <img src="{{post.image.url}}" class="img-fluid" style="width: 160px;">
+                </div>
+            {% endif %}
+            <div class="mx-2">
+                <h4 class="post-title">{{post.title}}</h4>
+                <h5 class="post-subtitle">{{post.content_str|slice:'50'}}</h5>
+                <p class="post-meta">
+                    <a href="#!">{{object.autor.get_full_name|default:"Autor sem nome"}}</a>
+                    em {{post.created_at}}
+                </p>
+            </div>
+        </div>
+    </a>
+    <hr class="my-4" />
+{% empty %}
+    <h2 class="post-title">O blog não possui nenhum post</h2>
+{% endfor %}

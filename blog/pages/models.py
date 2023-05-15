@@ -48,8 +48,29 @@ class Theme(BaseModel):
     description = HTMLField()
     path = models.CharField("Pasta do tema", max_length=50)
     
+    fonts = models.TextField("Fontes do google", default="", blank=True)
+    
+    navbar_path = models.CharField("Path do navbar", max_length=200, blank=True)
+    sidebar_path = models.CharField("Path do sidebar", max_length=200, blank=True)
+    content_path = models.CharField("Path do conteúdo", max_length=200, blank=True)
+    footer_path = models.CharField("Path do footer", max_length=200, blank=True)
+    
+    has_navbar = models.BooleanField("O tema mostra o navbar",default=True, blank=True)
+    has_sidebar = models.BooleanField("O tema mostra o sidebar", default=False, blank=True)
+    has_header = models.BooleanField("O tema mostra o header", default=False, blank=True)
+    
     def __str__(self):
         return self.name
+    
+    @hook('before_create')
+    @hook('before_update')
+    def populate_paths(self):        
+        self.navbar_path = f'core/{self.path}/includes/navbar.html'
+        self.sidebar_path = f'core/{self.path}/includes/sidebar.html'
+        self.content_path = f'core/{self.path}/includes/content.html'
+        self.footer_path = f'core/{self.path}/includes/footer.html'
+        
+        self.save(skip_hooks=True)
 
     class Meta:
         ordering = ['-created_at']

@@ -14,11 +14,13 @@ class PostDetailView(DetailView):
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         if request.GET:
             data = request.GET
+            post = self.get_object()
             comment, created = Comment.objects.get_or_create(
-                post=self.get_object(),
+                post=post,
                 autor=self.request.user,
                 parent=Comment.objects.get(pk=data.get('parent')) if data.get('parent') else None,
-                text=data.get('text')
+                text=data.get('text'),
+                approved=True if post.autor.get_configuration and post.autor.get_configuration.auto_approve_comments else False
             )
             
             if created:

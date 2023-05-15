@@ -1,0 +1,30 @@
+{% block content %}
+    <div class="container-fluid p-0">
+        {% include 'core/includes/messages.html' %}
+        <section class="resume-section" id="about">
+            <div class="resume-section-content">
+                <h1 class="mb-0">
+                    {{object.autor.get_configuration.name|default:"Blog sem nome"}}
+                </h1>
+                <div class="subheading mb-5">
+                    <a href="mailto:{{object.autor.email}}">{{object.autor.email}}</a>
+                </div>
+                <p class="lead mb-5">{{object.autor.get_configuration.description|safe}}</p>
+                <div class="social-icons">
+                    {% for social in object.autor.socialaccount_set.all %}
+                        <a class="social-icon" href="{{social.url}}"><i class="{{social.get_icon}}"></i></a>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <hr class="m-0" />
+        {% for page in object.autor.pages %}
+            <section class="resume-section" id="page-{{forloop.counter}}">
+                <div class="resume-section-content">
+                    {{page.content|safe}}
+                </div>
+            </section>
+            <hr class="m-0" />
+        {% endfor %}
+    </div>
+{% endblock content %}
