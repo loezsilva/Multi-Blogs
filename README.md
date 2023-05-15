@@ -5,8 +5,55 @@ MultiBlogs é uma plataforma de blogs multiusuários desenvolvida em Django, que
 # Requisitos do sistema
 
 Python 3.x
+
 Django 3.x
+
 PostgreSQL (ou outro banco de dados compatível com Django)
+
+
+# Libs utilizadas
+
+Django 4x
+
+DRF 3x
+
+Bootstrap 5x
+
+Django Lifecycle Hooks
+ 
+Python Decouple 
+
+Django filters
+
+DRF Camel case
+
+Anymail  
+
+Sentry
+
+Django Storages
+
+Django Bdbackup 4x
+
+DRF Yasg
+
+Django Import Export  
+
+Django admin interface
+
+Django TinyMCE 3x
+
+
+#  Templates utilizados
+Temas do **Start Bootstrap:**
+https://startbootstrap.com
+
+**Clean Blog**
+https://startbootstrap.com/theme/clean-blog
+
+**Tema Resume**
+https://startbootstrap.com/theme/resume
+
 
 # Instalação
 
