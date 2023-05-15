@@ -59,6 +59,9 @@ class Theme(BaseModel):
     has_sidebar = models.BooleanField("O tema mostra o sidebar", default=False, blank=True)
     has_header = models.BooleanField("O tema mostra o header", default=False, blank=True)
     
+    can_create_post = models.BooleanField("O tema pode criar posts", default=True, blank=True)
+    can_create_page = models.BooleanField("O tema pode criar páginas", default=True, blank=True)
+    
     def __str__(self):
         return self.name
     

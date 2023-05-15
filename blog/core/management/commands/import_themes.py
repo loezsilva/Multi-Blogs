@@ -31,6 +31,7 @@ class Command(BaseCommand):
             "has_navbar": False,
             "has_sidebar": True,
             "has_header": False,
+            "can_create_post": False,
         }
     ]
 

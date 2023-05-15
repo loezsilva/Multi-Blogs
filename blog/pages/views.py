@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic import DetailView
 from blog.accounts.models import User
 from blog.posts.models import Post
@@ -28,3 +29,10 @@ class BlogDetailView(DetailView):
 class PageDetailView(DetailView):
     queryset = Page.objects.all()
     template_name = 'pages/page.html'
+    
+    def dispatch(self, request, *args, **kwargs):
+        page = self.get_object()
+        if not page.autor.get_configuration.theme.can_create_page:
+            return redirect(reverse('pages:blog-detail', kwargs={ "slug": page.autor.slug }))
+        
+        return super().dispatch(request, *args, **kwargs)

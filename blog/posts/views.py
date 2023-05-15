@@ -1,3 +1,5 @@
+from django.shortcuts import redirect
+from django.urls import reverse
 from typing import Any
 from django.http import HttpRequest, HttpResponse
 from django.views.generic import DetailView
@@ -36,3 +38,9 @@ class PostDetailView(DetailView):
         context["comments"] = Comment.objects.filter(post=self.get_object(), approved=True)
         return context
     
+    def dispatch(self, request, *args, **kwargs):
+        page = self.get_object()
+        if not page.autor.get_configuration.theme.can_create_post:
+            return redirect(reverse('pages:blog-detail', kwargs={ "slug": page.autor.slug }))
+        
+        return super().dispatch(request, *args, **kwargs)

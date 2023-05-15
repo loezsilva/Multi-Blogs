@@ -1,4 +1,36 @@
 {% block content %}
+
+    {% if object.autor.get_configuration.theme.has_header %}
+        {% block header %}
+            <header class="masthead" style="background-image: url({{object.header_image}})">
+                <div class="container position-relative px-4 px-lg-5">
+                    <div class="row gx-4 gx-lg-5 justify-content-center">
+                        <div class="col-12">
+                            <div class="site-heading">
+                                <h1>
+                                    {{object.autor.get_configuration.name|default:"Blog sem nome"}}
+                                </h1>
+                                <span class="subheading">
+                                    {{object.autor.get_configuration.description|default:"Blog sem descrição"|safe}}
+                                </span>
+                            </div>
+                        </div>
+                        {% if object.autor == user and object.autor.get_configuration %}
+                            <div class="d-flex justify-content-center my-3">
+                                <a href="{{object.autor.get_configuration.urls.change}}" class="btn btn-primary">Modificar <i class="fas fa-edit"></i></a>
+                                <a href="{{object.autor.get_configuration.urls.delete}}" class="btn btn-danger mx-2">Remover <i class="fas fa-times"></i></a>
+                            </div>
+                        {% else %}
+                            <div class="d-flex justify-content-center my-3">
+                                <a href="{% url 'admin:accounts_blogconfiguration_add' %}" class="btn btn-primary">Criar configuração <i class="fas fa-plus"></i></a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </header>
+        {% endblock header %}
+    {% endif %}
+
     <div class="container px-4 px-lg-5" style="min-height: 100vh;">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-12">

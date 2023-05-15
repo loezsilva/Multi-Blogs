@@ -7,8 +7,11 @@ from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
 from django.core.files import File
+from django.core import management
+from blog.pages.models import Theme
 from tinymce.models import HTMLField
 from blog.core.models import BaseModel
+from django.utils.html import strip_tags
 from django.utils.crypto import get_random_string
 from django.contrib.sessions.models import Session
 from django.core.files.temp import NamedTemporaryFile
@@ -16,8 +19,6 @@ from django.utils.translation import gettext_lazy as _
 from django_lifecycle import hook, LifecycleModelMixin
 from django.contrib.auth.models import AbstractBaseUser, UserManager, PermissionsMixin
 from django.template.defaultfilters import slugify
-from blog.pages.models import Theme
-from django.core import management
 
 
 
@@ -221,3 +222,7 @@ class BlogConfiguration(BaseModel):
             "change": reverse(f'admin:{self._meta.app_label}_{self._meta.model_name}_change', args=(self.pk,)),
             "delete": reverse(f'admin:{self._meta.app_label}_{self._meta.model_name}_delete', args=(self.pk,))
         }
+    
+    @property
+    def description_str(self):
+        return strip_tags(self.description)
