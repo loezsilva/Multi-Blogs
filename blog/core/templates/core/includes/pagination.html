@@ -12,7 +12,7 @@
           <a class="page-link"
             href="?page={% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% endif %}{% for key, value in request.GET.items %}{% if key != 'page'%}{% for a in request.GET|get_list:key %}&{{key}}={{a}}{% endfor %}{% endif %}{% endfor %}"
             aria-controls="table-objects" aria-label="Anterior">
-            <i data-feather="chevron-left"></i>
+            <i class="fa-solid fa-chevron-left"></i>
           </a>
         </li>
         {% if paginator.num_pages < 12 %}
@@ -95,7 +95,7 @@
         <li class="page-item next {% if not page_obj.has_next %}disabled{% endif %}">
           <a class="page-link page-link-icon"
             href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page'%}{% for a in request.GET|get_list:key %}&{{key}}={{a}}{% endfor %}{% endif %}{% endfor %}{% endif %}">
-            <i data-feather="chevron-right"></i>
+            <i class="fa-solid fa-chevron-right"></i>
           </a>
         </li>
       </ul>

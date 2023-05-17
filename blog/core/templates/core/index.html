@@ -1,0 +1,103 @@
+{% extends 'core/sample_base.html' %}
+
+
+{% block content %}
+{% comment %} 
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="#!">Start Bootstrap</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">All Products</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="#!">Popular Items</a></li>
+                        <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <button class="btn btn-outline-dark" type="submit">
+                    <i class="bi-cart-fill me-1"></i>
+                    Cart
+                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                </button>
+            </form>
+        </div>
+    </div>
+</nav> 
+{% endcomment %}
+<section style="min-height: 100vh;">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            {% if main_blog %}
+                <div class="col-md-6">
+                    {% if main_blog.avatar %}
+                        <img class="card-img-top mb-5 mb-md-0" src="{{main_blog.avatar.url}}" alt="..." />
+                    {% else %}
+                        <img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg" alt="..." />
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    <div class="small mb-1">Em evidência</div>
+                    <h1 class="display-5 fw-bolder">{{main_blog.get_configuration.name}}</h1>
+                    <div class="fs-5 mb-5">
+                        <span>{{main_blog.total_posts}} posts</span>
+                    </div>
+                    <p class="lead">{{main_blog.get_configuration.description_str|truncatewords:50}}</p>
+                    <div class="d-flex">
+                        <a href="{{main_blog.get_absolute_url}}" target="_blank" class="btn btn-outline-dark flex-shrink-0">
+                            <i class="fa-solid fa-eye me-1"></i>
+                            Visitar blog {{main_blog.get_configuration.name}}
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <h4>Nenhum blog cadastrado, seja o primeira a criar <a class="">clicando aqui</a></h4>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% if object_list %}
+    <section class="py-5 bg-light">
+        <div class="container px-4 px-lg-5 mt-5">
+            <h2 class="fw-bolder mb-4">Blogs mais movimentados</h2>
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% for blog in object_list %}
+                    <div class="col-3 mb-5">
+                        <div class="card h-100">
+                            {% if blog.avatar %}
+                                <img class="card-img-top" src="{{blog.avatar.url}}" alt="..." />
+                            {% else %}
+                                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            {% endif %}
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <h5 class="fw-bolder text-truncate">{{blog.get_configuration.name}}</h5>
+                                    <p class="fw-bolder text-truncate">{{blog.total_posts}} posts</p>
+                                </div>
+                            </div>
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{blog.get_absolute_url}}"><i class="fa-solid fa-eye"></i> Visitar </a></div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    {% include 'core/includes/pagination.html' %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endif %}
+<footer class="py-5 bg-dark">
+    <div class="container"><p class="m-0 text-center text-white">Desenvolvido por <a href="https://github.com/loezsilva">Luiz Silva</a></p></div>
+</footer>
+{% endblock content %}

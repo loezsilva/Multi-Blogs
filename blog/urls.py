@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from blog.core.views import IndexListView
 
 urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
+    path('', IndexListView.as_view(), name='index'),
     path('', include('blog.pages.urls')),
     path('tinymce/', include('tinymce.urls')),
 ]

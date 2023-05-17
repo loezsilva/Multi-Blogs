@@ -84,7 +84,7 @@ class User(LifecycleModelMixin, PermissionsMixin, AbstractBaseUser):
         return f'{self.username}'
     
     def get_absolute_url(self):
-        return reverse("accounts:profile", kwargs={"pk": self.pk})
+        return reverse("pages:blog-detail", kwargs={"slug": self.slug})
     
     
     def get_full_name(self):
@@ -92,7 +92,7 @@ class User(LifecycleModelMixin, PermissionsMixin, AbstractBaseUser):
     
     @property
     def urls(self):
-        return  {}                                                                                                                                                                                         
+        return  {}
 
     @hook('after_create')
     def create_token(self):
