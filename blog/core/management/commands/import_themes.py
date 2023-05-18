@@ -10,6 +10,7 @@ class Command(BaseCommand):
             "name": "Clean blog",
             "description": "",
             "path": "clean-blog",
+            "image_url": "https://assets.startbootstrap.com/img/screenshots/themes/clean-blog.jpg",
             "fonts": """
                 <!-- Google fonts-->
                 <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
@@ -18,11 +19,13 @@ class Command(BaseCommand):
             "has_navbar": True,
             "has_sidebar": False,
             "has_header": True,
+            "can_create_post": True,
         },
         {
             "name": "Resume",
             "description": "",
             "path": "resume",
+            "image_url": "https://assets.startbootstrap.com/img/screenshots/themes/resume.jpg",
             "fonts": """
                 <!-- Google fonts-->
                 <link href="https://fonts.googleapis.com/css?family=Saira+Extra+Condensed:500,700" rel="stylesheet" type="text/css" />
@@ -42,5 +45,6 @@ class Command(BaseCommand):
         for theme in self.themes:
             Theme.objects.update_or_create(
                 name=theme.get('name'),
+                path=theme.get('path'),
                 defaults=theme
             )

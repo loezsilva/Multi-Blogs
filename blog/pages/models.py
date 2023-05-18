@@ -47,7 +47,7 @@ class Theme(BaseModel):
     name = models.CharField("Nome do tema", max_length=50)
     description = HTMLField()
     path = models.CharField("Pasta do tema", max_length=50)
-    
+    image_url = models.URLField("Image do Tema", max_length=255, default="")
     fonts = models.TextField("Fontes do google", default="", blank=True)
     
     navbar_path = models.CharField("Path do navbar", max_length=200, blank=True)
@@ -72,8 +72,6 @@ class Theme(BaseModel):
         self.sidebar_path = f'core/{self.path}/includes/sidebar.html'
         self.content_path = f'core/{self.path}/includes/content.html'
         self.footer_path = f'core/{self.path}/includes/footer.html'
-        
-        self.save(skip_hooks=True)
 
     class Meta:
         ordering = ['-created_at']

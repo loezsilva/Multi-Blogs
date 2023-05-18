@@ -1,5 +1,5 @@
 from django.contrib.sessions.models import Session
-from english.accounts.models import ActiveSession
+from blog.accounts.models import ActiveSession
 from django.utils import timezone
 
 def active_sessions(request):

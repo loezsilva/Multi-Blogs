@@ -93,6 +93,12 @@ Execute o servidor de desenvolvimento:
 
     python manage.py runserver
 
+# Mais Configurações
+
+As configurações principais podem ser alteradas através das **variáveis de ambiente**
+
+    MULTIBLOGS = True (é o Padrão, e permite que os usuários criem mais de um blog no projeto)
+
 # Uso
   
 Acesse a plataforma no seu navegador em http://localhost:8000/.

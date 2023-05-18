@@ -43,6 +43,10 @@ class User(LifecycleModelMixin, PermissionsMixin, AbstractBaseUser):
         }
     )
     
+    name = models.CharField('Seu nome', max_length=200, default="Usuário sem nome")
+    
+    blog_name = models.CharField('Nome do seu blog', max_length=200, blank=True)
+    
     first_name = models.CharField(_('first name'), max_length=30, blank=True)
     
     last_name = models.CharField(_('last name'), max_length=150, blank=True)
@@ -79,9 +83,7 @@ class User(LifecycleModelMixin, PermissionsMixin, AbstractBaseUser):
         ordering = ['-date_joined']
     
     def __str__(self):
-        if self.first_name:
-            return f'{self.first_name} {self.last_name}'
-        return f'{self.username}'
+        return self.name
     
     def get_absolute_url(self):
         return reverse("pages:blog-detail", kwargs={"slug": self.slug})
@@ -106,13 +108,14 @@ class User(LifecycleModelMixin, PermissionsMixin, AbstractBaseUser):
             
         BlogConfiguration.objects.get_or_create(
             autor=self,
+            name=self.blog_name,
             theme=Theme.objects.all().order_by('created_at').first()
         )
         
     @hook('before_create')
     def create_slug_and_set_email(self):
-        if self.get_full_name():
-            self.slug = slugify(self.get_full_name())
+        if self.blog_name:
+            self.slug = slugify(self.blog_name)
         else:
             self.slug = slugify(get_random_string(50))
         

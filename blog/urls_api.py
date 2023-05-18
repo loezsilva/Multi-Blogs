@@ -14,21 +14,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path, include
-from django.conf.urls.static import static
 from django.conf import settings
-from blog.core.views import IndexListView
+from blog.accounts.api.v1.views import CheckBlogAPIView
+
+app_name = 'api'
 
 urlpatterns = [
-    path(settings.ADMIN_URL, admin.site.urls),
-    path('', IndexListView.as_view(), name='index'),
-    path('', include('blog.pages.urls')),
-    path('contas/blogs/', include('blog.accounts.urls')),
-    path('contas/blogs/', include('django.contrib.auth.urls')),
-    path('tinymce/', include('tinymce.urls')),
-    path('api/v1/', include('blog.urls_api')),
+    path("blogs/check/", CheckBlogAPIView.as_view(), name="check-blog")
 ]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-

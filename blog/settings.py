@@ -117,7 +117,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-        'english.core.utils.CsrfExemptSessionAuthentication',
+        'blog.core.utils.CsrfExemptSessionAuthentication',
     ),
     "DEFAULT_PERMISSION_CLASSES": (
         'rest_framework.permissions.IsAuthenticated',
