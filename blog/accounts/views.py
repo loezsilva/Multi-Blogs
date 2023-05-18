@@ -1,43 +1,35 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from django.views.generic import CreateView
-from english.accounts.models import User
-from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView
+from django.views.generic import CreateView, UpdateView
+from .models import User, BlogConfiguration
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from english.plans.models import SignaturePayment
+from django.conf import settings
 
 class CustomUserCreationForm(UserCreationForm):
     
     class Meta:
         model = User
-        fields = ("username", "email", "first_name", "last_name", "accepted_the_terms_of_use")
-        
-
-# Create your views here.
-class SignUpView(CreateView):
+        fields = ("avatar", "username", "first_name", "accepted_the_terms_of_use")
+    
+class BlogCreationView(CreateView):
     form_class = CustomUserCreationForm
-    template_name = 'registration/register.html'
-    success_url = reverse_lazy("chats:chat")
+    template_name = 'accounts/blog_creation.html'
     
+    def dispatch(self, request, *args, **kwargs):
+        if not settings.MULTIBLOGS and User.objects.all().count() > 0:
+            return redirect('/')
+        return super().dispatch(request, *args, **kwargs)
     
-class ProfileDetailView(LoginRequiredMixin, DetailView):
-    template_name = 'profile.html'
-    queryset = User.objects.all()
+    def get_success_url(self):
+        blog = self.object
+        return reverse('accounts:blog-configuration-update', kwargs={ "pk": blog.get_configuration.id })
     
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        
-        queryset = queryset.filter(pk=self.request.user.pk)
-        
-        return queryset
+class BlogConfigurationUpdateView(LoginRequiredMixin, UpdateView):
+    fields = "__all__"
+    model = BlogConfiguration
+    template_name = 'accounts/blog_configuration_update.html'
     
-class SignatureRenovationsListView(LoginRequiredMixin, ListView):
-    template_name = 'renovations.html'
-    queryset = SignaturePayment.objects.all()
-    
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(signature__user=self.request.user)
-        
-        return queryset
+    def get_success_url(self):
+        blog = self.get_object()
+        return redirect(blog.get_absolute_url())

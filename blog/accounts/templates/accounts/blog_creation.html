@@ -44,29 +44,50 @@
                     <!-- Contact form-->
                     <div class="bg-light rounded-4 py-5 px-4 px-md-5">
                         <div class="text-center mb-5">
-                            <h1 class="fw-bolder">Entre em sua conta</h1>
-                            <p class="lead fw-normal text-muted mb-0">Para alterar seu blog você precisa entrar em sua conta!</p>
+                            <h1 class="fw-bolder">Crie seu blog</h1>
+                            <p class="lead fw-normal text-muted mb-0">Para começar você precisa criar seu primeiro blog!</p>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
                                 <form method="POST">
                                     {% csrf_token %}
                                     <div class="form-floating mb-3">
-                                        {% render_field form.username class="form-control" placeholder="Sua email..." %}
-                                        <label for="name">{{form.username.label}}</label>
+                                        {% render_field form.avatar class="form-control" %}
+                                        <label for="name">{{form.avatar.label}}</label>
+                                        {% for error in form.avatar.errors %}
+                                            <div class="text-danger">{{error}}</div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        {% render_field form.username type="email" class="form-control" placeholder="Digite seu e-mail..." %}
+                                        <label for="name">Seu E-mail</label>
                                         {% for error in form.username.errors %}
                                             <div class="text-danger">{{error}}</div>
                                         {% endfor %}
                                     </div>
                                     <div class="form-floating mb-3">
-                                        {% render_field form.password class="form-control" placeholder="Sua senha..." %}
-                                        <label for="name">{{form.password.label}}</label>
-                                        {% if form.non_field_errors %}
-                                            <div class="text-danger my-3">{{form.non_field_errors}}</div>
-                                        {% endif %}
+                                        {% render_field form.first_name class="form-control" placeholder="Nome do seu blog..." required="required" %}
+                                        <label for="name">Nome do seu blog</label>
+                                        {% for error in form.first_name.errors %}
+                                            <div class="text-danger">{{error}}</div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        {% render_field form.password1 class="form-control" placeholder="Digite uma senha forte..." %}
+                                        <label for="name">{{form.password1.label}}</label>
+                                        {% for error in form.password1.errors %}
+                                            <div class="text-danger">{{error}}</div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        {% render_field form.password2 class="form-control" placeholder="Confirme a senha..." %}
+                                        <label for="name">{{form.password2.label}}</label>
+                                        {% for error in form.password2.errors %}
+                                            <div class="text-danger">{{error}}</div>
+                                        {% endfor %}
                                     </div>
                                     <div class="d-grid">
-                                        <button class="btn btn-primary btn-lg" type="submit">Entrar</button>
+                                        <button class="btn btn-primary btn-lg" type="submit">Criar blog</button>
                                     </div>
                                 </form>
                             </div>

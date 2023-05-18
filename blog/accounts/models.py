@@ -59,7 +59,7 @@ class User(LifecycleModelMixin, PermissionsMixin, AbstractBaseUser):
     
     CLIENT, OWNER = range(2)
     
-    slug = models.SlugField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True, blank=True)
     
     accepted_the_terms_of_use = models.BooleanField("Aceitou os termos de uso da plataforma", default=False, blank=True)
     
@@ -74,8 +74,8 @@ class User(LifecycleModelMixin, PermissionsMixin, AbstractBaseUser):
     objects = UserManager()
     
     class Meta:
-        verbose_name = 'Autor'
-        verbose_name_plural = 'Autores'
+        verbose_name = 'Blog'
+        verbose_name_plural = 'Blogs'
         ordering = ['-date_joined']
     
     def __str__(self):
@@ -110,10 +110,27 @@ class User(LifecycleModelMixin, PermissionsMixin, AbstractBaseUser):
         )
         
     @hook('before_create')
-    def create_slug(self):
+    def create_slug_and_set_email(self):
         if self.get_full_name():
             self.slug = slugify(self.get_full_name())
-        self.slug = slugify(get_random_string(50))
+        else:
+            self.slug = slugify(get_random_string(50))
+        
+        if not self.email:
+            self.email = self.username
+    
+    @hook('before_create')
+    def check_permission(self):
+        if not settings.MULTIBLOGS and User.objects.all().count() > 0:
+            raise PermissionError("Não é possível adicionar novos blogs com a configuração de MULTIBLOGS=False, altere o seu .env para MULTIBLOGS=True")
+        
+    @hook('after_create')
+    def set_superuser(self):
+        if not User.objects.filter(is_superuser=True).exists():
+            if user := User.objects.all().order_by('-date_joined').first():
+                user.is_superuser = True
+                user.is_staff = True
+                user.save(skip_hooks=True)
     
     def save_image_from_url(self, url):
         img_temp = NamedTemporaryFile(delete=True)

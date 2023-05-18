@@ -9,7 +9,7 @@ class BaseModel(LifecycleModelMixin, models.Model):
 	updated_at = models.DateTimeField(verbose_name='Atualizado em', auto_now=True)
 
 	class Meta:
-		abstract = True
+		abstract = True    
 
 class Newsletter(BaseModel):
     email = models.EmailField(max_length=254, unique=True)

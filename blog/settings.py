@@ -286,3 +286,5 @@ TINYMCE_DEFAULT_CONFIG = {
     'fontsize_formats': "8pt 10pt 12pt 14pt 18pt",
     'indentation' : '40pt'
 }
+
+MULTIBLOGS = config("MULTIBLOGS", default=True, cast=bool)

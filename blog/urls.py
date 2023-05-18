@@ -24,6 +24,8 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     path('', IndexListView.as_view(), name='index'),
     path('', include('blog.pages.urls')),
+    path('contas/blogs/', include('blog.accounts.urls')),
+    path('contas/blogs/', include('django.contrib.auth.urls')),
     path('tinymce/', include('tinymce.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
